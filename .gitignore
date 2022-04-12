@@ -1,2 +1,4 @@
 # dependencies
 /venv
+
+.DS_Store
