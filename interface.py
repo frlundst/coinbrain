@@ -1,6 +1,6 @@
 from tkinter import *
+from datetime import datetime
 import data
-import json
 
 class Interface:
     def __init__(self, title, dimensions):
@@ -16,11 +16,21 @@ class Interface:
         self.data = Label(self.root, text = "loading...")
         self.data.pack()
 
+        self.time = Label(self.root, text = "loading...")
+        self.time.pack()
+
     def run(self):
         self.root.mainloop()
 
-    def set_data(self):
-        response = data.get_data("https://api.kraken.com/0/public/Time")
-        time = response['result']['rfc1123']
-        self.data['text'] = time
-        self.root.after(5000, self.set_data)
+    def set_data(self, ):
+        try:
+            response = data.get_data("https://api.kraken.com/0/public/Ticker?pair=XBTUSD")
+            xbtusd = response['result']['XXBTZUSD']['a'][0]
+            self.data['text'] = xbtusd
+        except:
+            self.data['text'] = "Error"
+        self.root.after(60000, self.set_data)
+
+    def set_time(self, ):
+        self.time['text'] = datetime.now().strftime("%H:%M:%S")
+        self.root.after(1000, self.set_time)
